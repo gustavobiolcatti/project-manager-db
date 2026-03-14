@@ -1,0 +1,24 @@
+import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
+
+import { EntityBase } from './entity-base';
+import { Board, Task } from './index';
+
+@Entity('boardColumns')
+export class BoardColumn extends EntityBase {
+  @Column({ type: 'varchar', nullable: false })
+  name!: string;
+
+  @ManyToOne(
+    () => Board,
+    (board) => board.boardColumns,
+    { nullable: false }
+  )
+  board!: Board;
+
+  @OneToMany(
+    () => Task,
+    (task) => task.boardColumn,
+    { nullable: true }
+  )
+  tasks?: Task[];
+}
