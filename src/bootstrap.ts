@@ -1,7 +1,5 @@
-import * as ProjectManagerDb from './project-manager-db/entity';
-import * as ProjectManagerDbEnums from './project-manager-db/enums';
+import * as ProjectManagerDb from './project-manager-db';
 
-export { ProjectManagerDb, ProjectManagerDbEnums };
+export { ProjectManagerDb };
 
-export * from './project-manager-db/entity';
 export * from './project-manager-db/enums';
