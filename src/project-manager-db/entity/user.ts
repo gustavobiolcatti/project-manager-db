@@ -1,4 +1,6 @@
-import { Column, Entity, OneToMany } from 'typeorm';
+import { BeforeInsert, Column, Entity, OneToMany } from 'typeorm';
+
+import * as argon2 from 'argon2';
 
 import { EntityBase } from './entity-base';
 import { 
@@ -17,8 +19,17 @@ export class User extends EntityBase {
   @Column({ type: 'varchar', nullable: false })
   email!: string;
 
-  @Column({ type: 'varchar', nullable: false })
+  @Column({ type: 'varchar', nullable: false, select: false })
   password!: string;
+
+  @BeforeInsert()
+  async hashPassword() {
+    this.password = await argon2.hash(this.password, {
+      type: argon2.argon2id,
+      memoryCost: 2 ** 16,
+      timeCost: 3,
+    });
+  }
 
   @OneToMany(
     () => Workspace,
