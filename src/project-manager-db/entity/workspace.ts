@@ -1,19 +1,15 @@
-import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
+import { Column, Entity, OneToMany } from 'typeorm';
 
 import { EntityBase } from './entity-base';
-import { User, WorkspaceMember, Project } from './index';
+import { WorkspaceMember, Project } from './index';
 
 @Entity('workspaces')
 export class Workspace extends EntityBase {
   @Column({ type: 'varchar', nullable: false })
   name!: string;
 
-  @ManyToOne(
-    () => User,
-    (user) => user.workspaces,
-    { nullable: false }
-  )
-  owner!: User;
+  @Column({ type: 'bigint', nullable: false })
+  owner_id!: string;
 
   @OneToMany(
     () => WorkspaceMember,

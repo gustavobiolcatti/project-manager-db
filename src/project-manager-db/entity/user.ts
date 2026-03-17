@@ -32,13 +32,6 @@ export class User extends EntityBase {
   }
 
   @OneToMany(
-    () => Workspace,
-    (workspace) => workspace.owner,
-    { nullable: true }
-  )
-  workspaces?: Workspace[];
-
-  @OneToMany(
     () => WorkspaceMember,
     (workspaceMember) => workspaceMember.user,
     { nullable: true }
