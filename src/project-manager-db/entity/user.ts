@@ -1,4 +1,4 @@
-import { BeforeInsert, Column, Entity, OneToMany } from 'typeorm';
+import { BeforeInsert, Column, Entity, JoinColumn, OneToMany } from 'typeorm';
 
 import * as argon2 from 'argon2';
 
@@ -35,6 +35,7 @@ export class User extends EntityBase {
     (workspaceMember) => workspaceMember.user,
     { nullable: true }
   )
+  @JoinColumn({ name: 'user_id' })
   workspaceMembers?: WorkspaceMember[];
 
   @OneToMany(
@@ -42,6 +43,7 @@ export class User extends EntityBase {
     (task) => task.assignee,
     { nullable: true }
   )
+  @JoinColumn({ name: 'assignee_id' })
   assignedTasks?: Task[];
 
   @OneToMany(
@@ -49,6 +51,7 @@ export class User extends EntityBase {
     (task) => task.reporter,
     { nullable: true }
   )
+  @JoinColumn({ name: 'reporter_id' })
   reportedTasks?: Task[];
 
   @OneToMany(
@@ -56,6 +59,7 @@ export class User extends EntityBase {
     (comment) => comment.user,
     { nullable: true }
   )
+  @JoinColumn({ name: 'user_id' })
   comments?: Comment[];
 
   @OneToMany(
@@ -63,5 +67,6 @@ export class User extends EntityBase {
     (interaction) => interaction.user,
     { nullable: true }
   )
+  @JoinColumn({ name: 'user_id' })
   interactions?: Interaction[];
 }

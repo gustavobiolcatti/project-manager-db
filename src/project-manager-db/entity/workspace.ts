@@ -1,4 +1,4 @@
-import { Column, Entity, OneToMany } from 'typeorm';
+import { Column, Entity, JoinColumn, OneToMany } from 'typeorm';
 
 import { EntityBase } from './entity-base';
 import { WorkspaceMember, Project } from './index';
