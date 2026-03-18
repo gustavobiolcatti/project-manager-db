@@ -5,7 +5,6 @@ import * as argon2 from 'argon2';
 import { EntityBase } from './entity-base';
 import { 
   Task, 
-  Workspace, 
   WorkspaceMember, 
   Comment, 
   Interaction 

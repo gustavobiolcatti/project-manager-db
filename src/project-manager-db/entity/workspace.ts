@@ -9,7 +9,7 @@ export class Workspace extends EntityBase {
   name!: string;
 
   @Column({ type: 'bigint', nullable: false })
-  owner_id!: string;
+  ownerId!: string;
 
   @OneToMany(
     () => WorkspaceMember,
