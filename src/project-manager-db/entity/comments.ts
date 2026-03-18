@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
 
 import { EntityBase } from './entity-base';
 import { User, Task } from './index';
@@ -13,6 +13,7 @@ export class Comment extends EntityBase {
     (task) => task.comments,
     { nullable: false }
   )
+  @JoinColumn({ name: 'task_id' })
   task!: Task;
 
   @ManyToOne(
@@ -20,5 +21,6 @@ export class Comment extends EntityBase {
     (user) => user.comments,
     { nullable: false }
   )
+  @JoinColumn({ name: 'user_id' })
   user!: User;
 }

@@ -1,4 +1,4 @@
-import { Column, Entity, OneToMany } from 'typeorm';
+import { Column, Entity, JoinColumn, OneToMany } from 'typeorm';
 
 import { EntityBase } from './entity-base';
 import { WorkspaceMember, Project } from './index';
@@ -16,6 +16,7 @@ export class Workspace extends EntityBase {
     (workspaceMember) => workspaceMember.workspace,
     { nullable: true }
   )
+  @JoinColumn({ name: 'workspace_id' })
   workspaceMembers?: WorkspaceMember[];
 
   @OneToMany(
@@ -23,5 +24,6 @@ export class Workspace extends EntityBase {
     (project) => project.workspace,
     { nullable: true }
   )
+  @JoinColumn({ name: 'workspace_id' })
   projects?: Project[];
 }
