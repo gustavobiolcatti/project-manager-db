@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
 
 import { EntityBase } from './entity-base';
 import { User, Task } from './index';
@@ -11,17 +11,11 @@ export class Interaction extends EntityBase {
   @Column({ type: 'jsonb', nullable: false })
   payload!: string;
 
-  @ManyToOne(
-    () => Task,
-    (task) => task.interactions,
-    { nullable: false }
-  )
+  @ManyToOne(() => Task, (task) => task.interactions, { nullable: false })
+  @JoinColumn({ name: 'taskId' })
   task!: Task;
 
-  @ManyToOne(
-    () => User,
-    (user) => user.interactions,
-    { nullable: false }
-  )
+  @ManyToOne(() => User, (user) => user.interactions, { nullable: false })
+  @JoinColumn({ name: 'userId' })
   user!: User;
 }

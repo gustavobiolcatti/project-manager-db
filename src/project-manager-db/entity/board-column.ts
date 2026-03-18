@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
 
 import { EntityBase } from './entity-base';
 import { Board, Task } from './index';
@@ -8,17 +8,10 @@ export class BoardColumn extends EntityBase {
   @Column({ type: 'varchar', nullable: false })
   name!: string;
 
-  @ManyToOne(
-    () => Board,
-    (board) => board.boardColumns,
-    { nullable: false }
-  )
+  @ManyToOne(() => Board, (board) => board.boardColumns, { nullable: false })
+  @JoinColumn({ name: 'boardId' })
   board!: Board;
 
-  @OneToMany(
-    () => Task,
-    (task) => task.boardColumn,
-    { nullable: true }
-  )
+  @OneToMany(() => Task, (task) => task.boardColumn, { nullable: true })
   tasks?: Task[];
 }

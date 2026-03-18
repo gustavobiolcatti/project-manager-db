@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
 
 import { EntityBase } from './entity-base';
 import { BoardColumn, User, Comment, Interaction } from './index';
@@ -14,38 +14,21 @@ export class Task extends EntityBase {
   @Column({ type: 'integer', nullable: true })
   priority?: number;
 
-  @ManyToOne(
-    () => User,
-    (user) => user.assignedTasks,
-    { nullable: true }
-  )
+  @ManyToOne(() => User, (user) => user.assignedTasks, { nullable: true })
+  @JoinColumn({ name: 'assigneeId' })
   assignee?: User;
 
-  @ManyToOne(
-    () => User,
-    (user) => user.reportedTasks,
-    { nullable: false }
-  )
+  @ManyToOne(() => User, (user) => user.reportedTasks, { nullable: false })
+  @JoinColumn({ name: 'reporterId' })
   reporter!: User;
 
-  @ManyToOne(
-    () => BoardColumn,
-    (boardColumn) => boardColumn.tasks,
-    { nullable: false }
-  )
+  @ManyToOne(() => BoardColumn, (boardColumn) => boardColumn.tasks, { nullable: false })
+  @JoinColumn({ name: 'boardColumnId' })
   boardColumn!: BoardColumn;
 
-  @OneToMany(
-    () => Comment,
-    (comment) => comment.task,
-    { nullable: true }
-  )
+  @OneToMany(() => Comment, (comment) => comment.task, { nullable: true })
   comments?: Comment[];
 
-  @OneToMany(
-    () => Interaction,
-    (interaction) => interaction.task,
-    { nullable: true }
-  )
+  @OneToMany(() => Interaction, (interaction) => interaction.task, { nullable: true })
   interactions?: Interaction[];
 }
