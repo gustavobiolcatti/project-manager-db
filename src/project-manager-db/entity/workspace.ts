@@ -11,19 +11,9 @@ export class Workspace extends EntityBase {
   @Column({ type: 'bigint', nullable: false })
   ownerId!: string;
 
-  @OneToMany(
-    () => WorkspaceMember,
-    (workspaceMember) => workspaceMember.workspace,
-    { nullable: true }
-  )
-  @JoinColumn({ name: 'workspace_id' })
+  @OneToMany(() => WorkspaceMember, (workspaceMember) => workspaceMember.workspace, { nullable: true })
   workspaceMembers?: WorkspaceMember[];
 
-  @OneToMany(
-    () => Project,
-    (project) => project.workspace,
-    { nullable: true }
-  )
-  @JoinColumn({ name: 'workspace_id' })
+  @OneToMany(() => Project, (project) => project.workspace, { nullable: true })
   projects?: Project[];
 }

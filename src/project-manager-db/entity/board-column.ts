@@ -8,19 +8,10 @@ export class BoardColumn extends EntityBase {
   @Column({ type: 'varchar', nullable: false })
   name!: string;
 
-  @ManyToOne(
-    () => Board,
-    (board) => board.boardColumns,
-    { nullable: false }
-  )
-  @JoinColumn({ name: 'board_id' })
+  @ManyToOne(() => Board, (board) => board.boardColumns, { nullable: false })
+  @JoinColumn({ name: 'boardId' })
   board!: Board;
 
-  @OneToMany(
-    () => Task,
-    (task) => task.boardColumn,
-    { nullable: true }
-  )
-  @JoinColumn({ name: 'board_column_id' })
+  @OneToMany(() => Task, (task) => task.boardColumn, { nullable: true })
   tasks?: Task[];
 }

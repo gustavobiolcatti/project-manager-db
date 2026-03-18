@@ -8,19 +8,11 @@ export class Comment extends EntityBase {
   @Column({ type: 'varchar', nullable: false })
   content!: string;
 
-  @ManyToOne(
-    () => Task,
-    (task) => task.comments,
-    { nullable: false }
-  )
-  @JoinColumn({ name: 'task_id' })
+  @ManyToOne(() => Task, (task) => task.comments, { nullable: false })
+  @JoinColumn({ name: 'taskId' })
   task!: Task;
 
-  @ManyToOne(
-    () => User,
-    (user) => user.comments,
-    { nullable: false }
-  )
-  @JoinColumn({ name: 'user_id' })
+  @ManyToOne(() => User, (user) => user.comments, { nullable: false })
+  @JoinColumn({ name: 'userId' })
   user!: User;
 }

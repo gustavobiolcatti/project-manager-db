@@ -11,19 +11,11 @@ export class Interaction extends EntityBase {
   @Column({ type: 'jsonb', nullable: false })
   payload!: string;
 
-  @ManyToOne(
-    () => Task,
-    (task) => task.interactions,
-    { nullable: false }
-  )
-  @JoinColumn({ name: 'task_id' })
+  @ManyToOne(() => Task, (task) => task.interactions, { nullable: false })
+  @JoinColumn({ name: 'taskId' })
   task!: Task;
 
-  @ManyToOne(
-    () => User,
-    (user) => user.interactions,
-    { nullable: false }
-  )
-  @JoinColumn({ name: 'user_id' })
+  @ManyToOne(() => User, (user) => user.interactions, { nullable: false })
+  @JoinColumn({ name: 'userId' })
   user!: User;
 }
