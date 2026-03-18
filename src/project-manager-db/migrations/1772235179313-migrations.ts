@@ -16,9 +16,9 @@ export class Migrations1772235179313 implements MigrationInterface {
         "name" VARCHAR NOT NULL, 
         "email" VARCHAR NOT NULL, 
         "password" VARCHAR NOT NULL,
-        "created_at" TIMESTAMP NOT NULL DEFAULT now(), 
-        "updated_at" TIMESTAMP, 
-        "deleted_at" TIMESTAMP 
+        "createdAt" TIMESTAMP NOT NULL DEFAULT now(), 
+        "updatedAt" TIMESTAMP, 
+        "deletedAt" TIMESTAMP 
       );
     `);
 
@@ -26,25 +26,24 @@ export class Migrations1772235179313 implements MigrationInterface {
       CREATE TABLE IF NOT EXISTS "workspaces" (
         "id" BIGSERIAL PRIMARY KEY NOT NULL,
         "name" VARCHAR(255) NOT NULL,
-        "owner_id" BIGINT NOT NULL,
-        "created_at" TIMESTAMP NOT NULL DEFAULT now(),
-        "updated_at" TIMESTAMP,
-        "deleted_at" TIMESTAMP,
-        CONSTRAINT "FK_workspaces_owner" FOREIGN KEY ("owner_id") REFERENCES "users" ("id")
+        "ownerId" BIGINT NOT NULL,
+        "createdAt" TIMESTAMP NOT NULL DEFAULT now(),
+        "updatedAt" TIMESTAMP,
+        "deletedAt" TIMESTAMP
       );
     `)
 
     await queryRunner.query(`
       CREATE TABLE IF NOT EXISTS "workspaceMembers" (
         "id" BIGSERIAL PRIMARY KEY NOT NULL,
-        "workspace_id" BIGINT NOT NULL,
-        "user_id" BIGINT NOT NULL,
+        "workspaceId" BIGINT NOT NULL,
+        "userId" BIGINT NOT NULL,
         "role" workspace_member_role_enum NOT NULL,
-        "created_at" TIMESTAMP NOT NULL DEFAULT now(),
-        "updated_at" TIMESTAMP,
-        "deleted_at" TIMESTAMP,
-        CONSTRAINT "FK_workspaceMembers_workspace" FOREIGN KEY ("workspace_id") REFERENCES "workspaces" ("id"),
-        CONSTRAINT "FK_workspaceMembers_user" FOREIGN KEY ("user_id") REFERENCES "users" ("id")
+        "createdAt" TIMESTAMP NOT NULL DEFAULT now(),
+        "updatedAt" TIMESTAMP,
+        "deletedAt" TIMESTAMP,
+        CONSTRAINT "FK_workspaceMembers_workspace" FOREIGN KEY ("workspaceId") REFERENCES "workspaces" ("id"),
+        CONSTRAINT "FK_workspaceMembers_user" FOREIGN KEY ("userId") REFERENCES "users" ("id")
       );
     `)
 
@@ -53,11 +52,13 @@ export class Migrations1772235179313 implements MigrationInterface {
         "id" BIGSERIAL PRIMARY KEY NOT NULL,
         "name" VARCHAR NOT NULL,
         "description" VARCHAR,
-        "user_id" BIGINT NOT NULL,
-        "created_at" TIMESTAMP NOT NULL DEFAULT now(),
-        "updated_at" TIMESTAMP,
-        "deleted_at" TIMESTAMP,
-        CONSTRAINT "FK_projects_user" FOREIGN KEY ("user_id") REFERENCES "users" ("id")
+        "userId" BIGINT NOT NULL,
+        "workspaceId" BIGINT NOT NULL,
+        "createdAt" TIMESTAMP NOT NULL DEFAULT now(),
+        "updatedAt" TIMESTAMP,
+        "deletedAt" TIMESTAMP,
+        CONSTRAINT "FK_projects_user" FOREIGN KEY ("userId") REFERENCES "users" ("id"),
+        CONSTRAINT "FK_projects_workspace" FOREIGN KEY ("workspaceId") REFERENCES "workspaces" ("id")
       );
     `);
 
@@ -65,11 +66,11 @@ export class Migrations1772235179313 implements MigrationInterface {
       CREATE TABLE IF NOT EXISTS "boards" (
         "id" BIGSERIAL PRIMARY KEY NOT NULL,
         "name" VARCHAR NOT NULL,
-        "project_id" BIGINT NOT NULL,
-        "created_at" TIMESTAMP NOT NULL DEFAULT now(),
-        "updated_at" TIMESTAMP,
-        "deleted_at" TIMESTAMP,
-        CONSTRAINT "FK_boards_project" FOREIGN KEY ("project_id") REFERENCES "projects" ("id")
+        "projectId" BIGINT NOT NULL,
+        "createdAt" TIMESTAMP NOT NULL DEFAULT now(),
+        "updatedAt" TIMESTAMP,
+        "deletedAt" TIMESTAMP,
+        CONSTRAINT "FK_boards_project" FOREIGN KEY ("projectId") REFERENCES "projects" ("id")
       );
     `);
 
@@ -77,11 +78,11 @@ export class Migrations1772235179313 implements MigrationInterface {
       CREATE TABLE IF NOT EXISTS "boardColumns" (
         "id" BIGSERIAL PRIMARY KEY NOT NULL,
         "name" VARCHAR NOT NULL,
-        "board_id" BIGINT NOT NULL,
-        "created_at" TIMESTAMP NOT NULL DEFAULT now(),
-        "updated_at" TIMESTAMP,
-        "deleted_at" TIMESTAMP,
-        CONSTRAINT "FK_boardColumns_board" FOREIGN KEY ("board_id") REFERENCES "boards" ("id")
+        "boardId" BIGINT NOT NULL,
+        "createdAt" TIMESTAMP NOT NULL DEFAULT now(),
+        "updatedAt" TIMESTAMP,
+        "deletedAt" TIMESTAMP,
+        CONSTRAINT "FK_boardColumns_board" FOREIGN KEY ("boardId") REFERENCES "boards" ("id")
       );
     `);
 
@@ -90,16 +91,16 @@ export class Migrations1772235179313 implements MigrationInterface {
         "id" BIGSERIAL PRIMARY KEY NOT NULL,
         "title" VARCHAR NOT NULL,
         "description" VARCHAR,
-        "column_id" BIGINT NOT NULL,
-        "assignee_id" BIGINT NOT NULL,
-        "reporter_id" BIGINT NOT NULL,
+        "boardColumnId" BIGINT NOT NULL,
+        "assigneeId" BIGINT NOT NULL,
+        "reporterId" BIGINT NOT NULL,
         "priority" INTEGER,
-        "created_at" TIMESTAMP NOT NULL DEFAULT now(),
-        "updated_at" TIMESTAMP,
-        "deleted_at" TIMESTAMP,
-        CONSTRAINT "FK_tasks_boardColumn" FOREIGN KEY ("column_id") REFERENCES "boardColumns" ("id"),
-        CONSTRAINT "FK_tasks_assignee" FOREIGN KEY ("assignee_id") REFERENCES "users" ("id"),
-        CONSTRAINT "FK_tasks_reporter" FOREIGN KEY ("reporter_id") REFERENCES "users" ("id")
+        "createdAt" TIMESTAMP NOT NULL DEFAULT now(),
+        "updatedAt" TIMESTAMP,
+        "deletedAt" TIMESTAMP,
+        CONSTRAINT "FK_tasks_boardColumn" FOREIGN KEY ("boardColumnId") REFERENCES "boardColumns" ("id"),
+        CONSTRAINT "FK_tasks_assignee" FOREIGN KEY ("assigneeId") REFERENCES "users" ("id"),
+        CONSTRAINT "FK_tasks_reporter" FOREIGN KEY ("reporterId") REFERENCES "users" ("id")
       );
     `);
 
@@ -107,13 +108,13 @@ export class Migrations1772235179313 implements MigrationInterface {
       CREATE TABLE IF NOT EXISTS "comments" (
         "id" BIGSERIAL PRIMARY KEY NOT NULL,
         "content" VARCHAR NOT NULL,
-        "task_id" BIGINT NOT NULL,
-        "user_id" BIGINT NOT NULL,
-        "created_at" TIMESTAMP NOT NULL DEFAULT now(),
-        "updated_at" TIMESTAMP,
-        "deleted_at" TIMESTAMP,
-        CONSTRAINT "FK_comments_task" FOREIGN KEY ("task_id") REFERENCES "tasks" ("id"),
-        CONSTRAINT "FK_comments_user" FOREIGN KEY ("user_id") REFERENCES "users" ("id")
+        "taskId" BIGINT NOT NULL,
+        "userId" BIGINT NOT NULL,
+        "createdAt" TIMESTAMP NOT NULL DEFAULT now(),
+        "updatedAt" TIMESTAMP,
+        "deletedAt" TIMESTAMP,
+        CONSTRAINT "FK_comments_task" FOREIGN KEY ("taskId") REFERENCES "tasks" ("id"),
+        CONSTRAINT "FK_comments_user" FOREIGN KEY ("userId") REFERENCES "users" ("id")
       );
     `);
 
@@ -121,13 +122,13 @@ export class Migrations1772235179313 implements MigrationInterface {
       CREATE TABLE IF NOT EXISTS "interactions" (
         "id" BIGSERIAL PRIMARY KEY NOT NULL,
         "payload" JSONB NOT NULL,
-        "task_id" BIGINT NOT NULL,
-        "user_id" BIGINT NOT NULL,
-        "created_at" TIMESTAMP NOT NULL DEFAULT now(),
-        "updated_at" TIMESTAMP,
-        "deleted_at" TIMESTAMP,
-        CONSTRAINT "FK_interactions_task" FOREIGN KEY ("task_id") REFERENCES "tasks" ("id"),
-        CONSTRAINT "FK_interactions_user" FOREIGN KEY ("user_id") REFERENCES "users" ("id")
+        "taskId" BIGINT NOT NULL,
+        "userId" BIGINT NOT NULL,
+        "createdAt" TIMESTAMP NOT NULL DEFAULT now(),
+        "updatedAt" TIMESTAMP,
+        "deletedAt" TIMESTAMP,
+        CONSTRAINT "FK_interactions_task" FOREIGN KEY ("taskId") REFERENCES "tasks" ("id"),
+        CONSTRAINT "FK_interactions_user" FOREIGN KEY ("userId") REFERENCES "users" ("id")
       );
     `);
   }

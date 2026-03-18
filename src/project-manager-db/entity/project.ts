@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
+import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
 
 import { EntityBase } from './entity-base';
 import { Workspace, Board } from './index';
@@ -16,7 +16,6 @@ export class Project extends EntityBase {
     (workspace) => workspace.projects,
     { nullable: false }
   )
-  @JoinColumn({ name: 'workspace_id' })
   workspace!: Workspace;
 
   @OneToMany(
@@ -24,6 +23,5 @@ export class Project extends EntityBase {
     (board) => board.project,
     { nullable: true }
   )
-  @JoinColumn({ name: 'project_id' })
   boards?: Board[];
 }

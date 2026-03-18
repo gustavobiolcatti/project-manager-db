@@ -15,19 +15,19 @@ export abstract class EntityBaseGeneral {
     update: false,
     insert: true,
   })
-  created_at!: Date;
+  createdAt!: Date;
 
   @UpdateDateColumn({
     type: 'timestamp',
     update: true,
     insert: false,
   })
-  updated_at?: Date;
+  updatedAt?: Date;
 
   @DeleteDateColumn({
     type: 'timestamp',
     update: true,
     insert: false,
   })
-  deleted_at?: Date;
+  deletedAt?: Date;
 }

@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
+import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
 
 import { EntityBase } from './entity-base';
 import { BoardColumn, User, Comment, Interaction } from './index';
@@ -19,7 +19,6 @@ export class Task extends EntityBase {
     (user) => user.assignedTasks,
     { nullable: true }
   )
-  @JoinColumn({ name: 'assignee_id' })
   assignee?: User;
 
   @ManyToOne(
@@ -27,7 +26,6 @@ export class Task extends EntityBase {
     (user) => user.reportedTasks,
     { nullable: false }
   )
-  @JoinColumn({ name: 'reporter_id' })
   reporter!: User;
 
   @ManyToOne(
@@ -35,7 +33,6 @@ export class Task extends EntityBase {
     (boardColumn) => boardColumn.tasks,
     { nullable: false }
   )
-  @JoinColumn({ name: 'board_column_id' })
   boardColumn!: BoardColumn;
 
   @OneToMany(
@@ -43,7 +40,6 @@ export class Task extends EntityBase {
     (comment) => comment.task,
     { nullable: true }
   )
-  @JoinColumn({ name: 'task_id' })
   comments?: Comment[];
 
   @OneToMany(
@@ -51,6 +47,5 @@ export class Task extends EntityBase {
     (interaction) => interaction.task,
     { nullable: true }
   )
-  @JoinColumn({ name: 'task_id' })
   interactions?: Interaction[];
 }

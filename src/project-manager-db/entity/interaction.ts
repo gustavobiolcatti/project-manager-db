@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
+import { Column, Entity, ManyToOne } from 'typeorm';
 
 import { EntityBase } from './entity-base';
 import { User, Task } from './index';
@@ -16,7 +16,6 @@ export class Interaction extends EntityBase {
     (task) => task.interactions,
     { nullable: false }
   )
-  @JoinColumn({ name: 'task_id' })
   task!: Task;
 
   @ManyToOne(
@@ -24,6 +23,5 @@ export class Interaction extends EntityBase {
     (user) => user.interactions,
     { nullable: false }
   )
-  @JoinColumn({ name: 'user_id' })
   user!: User;
 }
